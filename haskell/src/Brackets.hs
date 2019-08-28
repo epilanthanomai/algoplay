@@ -1,4 +1,4 @@
-module Algo001 (
+module Brackets (
   makeBracketMap,
   bracketsMatchM,
   bracketsMatch

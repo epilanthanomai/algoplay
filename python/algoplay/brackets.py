@@ -58,17 +58,3 @@ def brackets_match(s, pairs=None):
     # they're unbalanced. If it's empty, they've all been matched and we're
     # balanced.
     return not bracket_stack
-
-
-def test(s, expect):
-    result = brackets_match(s)
-    assert result == expect, f'{s!r} should be {expect}'
-
-if __name__ == '__main__':
-    test('', True)
-    test('()', True)
-    test('[]', True)
-    test('{}', True)
-    test('(]', False)
-    test('([]{)', False)
-    test('([]{([])})', True)
