@@ -4,7 +4,7 @@ module Brackets (
   bracketsMatch
 ) where
 
-import Control.Monad (foldM)
+import Control.Monad (foldM, (>>=))
 import Data.Maybe (catMaybes)
 import qualified Data.Map as Map
 
@@ -18,6 +18,9 @@ type BracketState = [BracketClass]
 -- A BracketMap is a quick static lookup matching the bracket characters we
 -- recognize to the ParsedBracket they represent.
 type BracketMap = Map.Map Char Bracket
+-- A BracketPair is specifically a two-character string containing matched
+-- open and close brackets.
+type BracketPair = String
 
 data Direction = Close | Open deriving (Eq, Show)
 data Bracket = Bracket Direction BracketClass deriving (Eq, Show)
@@ -57,12 +60,15 @@ bracketsMatchM bracketMap = bracketsBalanced . parseBrackets bracketMap
 bracketsMatch :: String -> Bool
 bracketsMatch = bracketsMatchM $ makeBracketMap defaultBrackets
 
-defaultBrackets :: [String]
+defaultBrackets :: [BracketPair]
 defaultBrackets = ["()", "[]", "{}"]
 
 -- Convert a list of bracket pairs (structured like defaultBrackets) to a
 -- BracketMap
-makeBracketMap :: [String] -> BracketMap
-makeBracketMap = Map.fromList . concat . map _makeBrackets
-  where _makeBrackets [open, close] = [ (open, Bracket Open open),
-                                        (close, Bracket Close open) ]
+makeBracketMap :: [BracketPair] -> BracketMap
+makeBracketMap = Map.fromList . (>>= makeBrackets)
+
+-- Convert a single bracket pair string to a BracketMap kv pair
+makeBrackets :: BracketPair -> [(Char, Bracket)]
+makeBrackets [open, close] = [ (open, Bracket Open open),
+                               (close, Bracket Close open) ]
