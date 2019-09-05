@@ -41,7 +41,7 @@ class NumberTerm(namedtuple('_NumberTerm', ['n'])):
 
 def has_match(*nums, total=24):
     terms = [ NumberTerm(n) for n in nums ]
-    return any(c.eval() == total for c in gen_combinactions(terms))
+    return any(c.eval() == total for c in gen_combinations(terms))
 
 
 def combinations(*nums, total=24):
