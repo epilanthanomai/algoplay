@@ -7,7 +7,9 @@ cabal-version:        >=1.10
 
 library
   hs-source-dirs:     src
-  exposed-modules:    Brackets
+  exposed-modules:
+    Brackets,
+    TwentyFour
   build-depends:
     base >= 4.7 && < 5,
     containers
@@ -24,4 +26,5 @@ test-suite test-algoplay
   default-language:   Haskell2010
   main-is:            Spec.hs
   other-modules:
-    TestBrackets
+    TestBrackets,
+    TestTwentyFour
